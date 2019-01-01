@@ -37,3 +37,31 @@ fun Float.updateScale(dir : Float, a : Int, b : Int) : Float = mirrorValue(a, b)
 fun Int.scaleX() : Float = 1f - 2 * (this % 2)
 
 fun Int.scaleY() : Float = 1f - 2 * (this / 2)
+
+fun Canvas.drawQLASNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = w / (nodes + 1)
+    val sc1 : Float = scale.divideScale(0, 2)
+    val sc2 : Float = scale.divideScale(1, 2)
+    val size : Float = gap / sizeFactor
+    paint.style = Paint.Style.STROKE
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.color = color
+    val r : Float = size / 3
+    save()
+    translate(gap * (i + 1), h / 2)
+    for (j in (0..(arcs - 1))) {
+        val scj1 : Float = sc1.divideScale(j, arcs)
+        val scj2 : Float = sc2.divideScale(j, arcs)
+        save()
+        scale(j.scaleX(), j.scaleY())
+        translate(size/2, size/2)
+        rotate(rotDeg * scj2)
+        drawArc(RectF(-r, -r, r, r), -90f, rotDeg * scj1, false, paint)
+        drawLine(0f, 0f, 0f, -r * 0.9f, paint)
+        restore()
+    }
+    restore()
+}
