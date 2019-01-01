@@ -42,7 +42,7 @@ fun Int.scaleY() : Float = 1f - 2 * (this / 2)
 fun Canvas.drawQLASNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val gap : Float = w / (nodes + 1)
+    val gap : Float = h / (nodes + 1)
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
     val size : Float = gap / sizeFactor
@@ -52,13 +52,12 @@ fun Canvas.drawQLASNode(i : Int, scale : Float, paint : Paint) {
     paint.color = color
     val r : Float = size / 3
     save()
-    translate(gap * (i + 1), h / 2)
+    translate(w/2, gap * (i + 1))
     for (j in (0..(arcs - 1))) {
         val scj1 : Float = sc1.divideScale(j, arcs)
         val scj2 : Float = sc2.divideScale(j, arcs)
         save()
-        scale(j.scaleX(), j.scaleY())
-        translate(size/2, size/2)
+        translate(size/2 * j.scaleX(), size/2 * j.scaleY())
         rotate(rotDeg * scj2)
         drawArc(RectF(-r, -r, r, r), -90f, rotDeg * scj1, false, paint)
         drawLine(0f, 0f, 0f, -r * 0.9f, paint)
