@@ -22,6 +22,7 @@ val strokeFactor : Int = 90
 val rotDeg : Float = 360f
 val color : Int = Color.parseColor("#4CAF50")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val DELAY : Long = 25
 
 fun Int.inverse() : Float = 1f / this
 
@@ -111,7 +112,7 @@ class QuarterLineArcStepView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(DELAY)
                     view.invalidate()
                 } catch(ex : Exception) {
 
