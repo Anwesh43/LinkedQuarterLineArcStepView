@@ -21,6 +21,7 @@ val sizeFactor : Float = 2.8f
 val strokeFactor : Int = 90
 val rotDeg : Float = 360f
 val color : Int = Color.parseColor("#4CAF50")
+val backColor : Int = Color.parseColor("#BDBDBD")
 
 fun Int.inverse() : Float = 1f / this
 
@@ -195,6 +196,28 @@ class QuarterLineArcStepView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : QuarterLineArcStepView) {
+
+        private val animator : Animator = Animator(view)
+        private val qlas : QuarterLineArcStep = QuarterLineArcStep(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            qlas.draw(canvas, paint)
+            animator.animate {
+                qlas.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            qlas.startUpdating {
+                animator.start()
+            }
         }
     }
 }
