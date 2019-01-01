@@ -222,4 +222,12 @@ class QuarterLineArcStepView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+        fun create(activity : Activity) : QuarterLineArcStepView {
+            val view : QuarterLineArcStepView = QuarterLineArcStepView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
