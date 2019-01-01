@@ -40,6 +40,27 @@ fun Int.scaleX() : Float = 1f - 2 * (this % 2)
 
 fun Int.scaleY() : Float = 1f - 2 * (this / 2)
 
+fun Canvas.drawLine(x : Float, size : Float, scale : Float, paint : Paint) {
+    if (scale > 0) {
+        save()
+        translate(x, 0f)
+        drawLine(0f, 0f, -size * scale, 0f, paint)
+        restore()
+    }
+}
+
+fun Canvas.drawSquare(size : Float, sc1 : Float, sc2 : Float,  paint : Paint) {
+    for (j in 0..(arcs)) {
+        val scj1 : Float = sc1.divideScale(j, arcs)
+        val scj2 : Float = sc2.divideScale(j, arcs)
+        save()
+        rotate(90f * j)
+        translate(size, size)
+        drawLine(0f, size, scj1, paint)
+        drawLine(-size, size, scj2, paint)
+        restore()
+    }
+}
 fun Canvas.drawQLASNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
@@ -54,6 +75,7 @@ fun Canvas.drawQLASNode(i : Int, scale : Float, paint : Paint) {
     val r : Float = size / 3
     save()
     translate(w/2, gap * (i + 1))
+    drawSquare(size, sc1, sc2, paint)
     for (j in (0..(arcs - 1))) {
         val scj1 : Float = sc1.divideScale(j, arcs)
         val scj2 : Float = sc2.divideScale(j, arcs)
